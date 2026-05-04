@@ -17,11 +17,12 @@ public class Treinador extends Utilizador {
      * @param password password
      * @param especialidade área de especialização (ex: Musculação)
      */
+    // ✅ CORRETO
     public Treinador(Integer id, String nome, String login,
-                     String password, String especialidade) {
-   
-        this.especialidade = especialidade;
-    }
+                 String password, String especialidade) {
+    super(id, nome, login, password);  // passa para Utilizador
+    this.especialidade = especialidade;
+}
 
     public String getEspecialidade() { 
         return especialidade; 

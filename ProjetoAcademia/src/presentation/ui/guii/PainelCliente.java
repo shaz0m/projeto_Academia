@@ -17,6 +17,7 @@ public class PainelCliente extends javax.swing.JFrame {
      */
     public PainelCliente() {
         initComponents();
+        carregarAulas();
     }
 
     /**
@@ -33,8 +34,6 @@ public class PainelCliente extends javax.swing.JFrame {
         btnInscrever = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtAdicionarAula = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -65,8 +64,6 @@ public class PainelCliente extends javax.swing.JFrame {
 
         jLabel1.setText("AULAS DISPONIVEIS");
 
-        jLabel2.setText("TREINO DESEJADO ");
-
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
@@ -82,20 +79,16 @@ public class PainelCliente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(147, 147, 147)
-                        .addComponent(btnInscrever)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtAdicionarAula, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(405, 405, 405)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(121, 121, 121)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnInscrever)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(139, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -109,12 +102,9 @@ public class PainelCliente extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAdicionarAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(btnInscrever))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(48, 48, 48)
+                .addComponent(btnInscrever, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(jButton2)
@@ -127,6 +117,42 @@ public class PainelCliente extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    /**
+ * Carrega as aulas disponíveis da base de dados e mostra na tabela.
+ */
+private void carregarAulas() {
+    String[] colunas = {"Nome", "Data/Hora", "Duração", "Vagas", "Treinador"};
+    javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(colunas, 0);
+
+    try {
+        java.sql.Connection ligacao = conexao.Conexao.getConexao();
+        String sql = "SELECT a.nome, a.data_hora_inicio, a.duracao, " +
+                     "a.capacidade, u.username " +
+                     "FROM aula a " +
+                     "JOIN treinador t ON a.treinador_id = t.id " +
+                     "JOIN utilizador u ON t.utilizador_id = u.id";
+
+        java.sql.Statement stmt = ligacao.createStatement();
+        java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+        while (rs.next()) {
+            Object[] linha = {
+                rs.getString("nome"),
+                rs.getString("data_hora_inicio"),
+                rs.getInt("duracao") + " min",
+                rs.getInt("capacidade"),
+                rs.getString("username")
+            };
+            modelo.addRow(linha);
+        }
+
+        tblAulasDisponiveis.setModel(modelo);
+
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro ao carregar aulas: " + e.getMessage());
+    }
+}
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -153,13 +179,11 @@ public class PainelCliente extends javax.swing.JFrame {
     private javax.swing.JButton btnInscrever;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAulasDisponiveis;
-    private javax.swing.JTextField txtAdicionarAula;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,7 @@
 
 package presentation.ui.guii;
 
+
 /**
  *
  * @author wende
@@ -31,14 +32,6 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnEntrar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        pnlAlterarSenha = new javax.swing.JPanel();
-        txtDigiteSenha = new javax.swing.JTextField();
-        txtNovaPalavraPasse = new javax.swing.JTextField();
-        txtConfirmarPasse = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        btnAlterarPass = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,69 +48,6 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setText("GESTÃO GINASIO ");
 
-        txtDigiteSenha.addActionListener(this::txtDigiteSenhaActionPerformed);
-
-        txtNovaPalavraPasse.addActionListener(this::txtNovaPalavraPasseActionPerformed);
-
-        txtConfirmarPasse.addActionListener(this::txtConfirmarPasseActionPerformed);
-
-        jLabel4.setText("DIGITE A SENHA ");
-
-        jLabel5.setText("CONFIRMAR NOVA PALAVRAR- PASSE ");
-
-        jLabel6.setText("NOVA PALAVRA - PASSE ");
-
-        btnAlterarPass.setText("ALTERAR PALAVRA-PASSE ");
-        btnAlterarPass.addActionListener(this::btnAlterarPassActionPerformed);
-
-        javax.swing.GroupLayout pnlAlterarSenhaLayout = new javax.swing.GroupLayout(pnlAlterarSenha);
-        pnlAlterarSenha.setLayout(pnlAlterarSenhaLayout);
-        pnlAlterarSenhaLayout.setHorizontalGroup(
-            pnlAlterarSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAlterarSenhaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAlterarPass)
-                .addGap(120, 120, 120))
-            .addGroup(pnlAlterarSenhaLayout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlAlterarSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDigiteSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNovaPalavraPasse, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtConfirmarPasse, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pnlAlterarSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlAlterarSenhaLayout.createSequentialGroup()
-                    .addGap(170, 170, 170)
-                    .addGroup(pnlAlterarSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel6))
-                    .addContainerGap(301, Short.MAX_VALUE)))
-        );
-        pnlAlterarSenhaLayout.setVerticalGroup(
-            pnlAlterarSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAlterarSenhaLayout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(txtDigiteSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtNovaPalavraPasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlAlterarSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtConfirmarPasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                .addComponent(btnAlterarPass)
-                .addGap(126, 126, 126))
-            .addGroup(pnlAlterarSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlAlterarSenhaLayout.createSequentialGroup()
-                    .addGap(67, 67, 67)
-                    .addComponent(jLabel4)
-                    .addGap(27, 27, 27)
-                    .addComponent(jLabel6)
-                    .addContainerGap(239, Short.MAX_VALUE)))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -127,22 +57,18 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(179, 179, 179))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(110, 110, 110)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnEntrar)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnEntrar)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
-                                    .addComponent(txtAdicionarRegistro))))
-                        .addGap(41, 41, 41))
-                    .addComponent(pnlAlterarSenha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                            .addComponent(txtAdicionarRegistro))))
+                .addContainerGap(260, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,9 +85,7 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(51, 51, 51)
                 .addComponent(btnEntrar)
-                .addGap(36, 36, 36)
-                .addComponent(pnlAlterarSenha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         txtAdicionarRegistro.getAccessibleContext().setAccessibleName("txtLogin");
@@ -180,69 +104,43 @@ public class Login extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
                                          
+    String login    = txtAdicionarRegistro.getText();
+    String password = txtSenha.getText();
 
-    String login    = txtAdicionarRegistro.getText().trim();
-    String password = txtSenha.getText().trim();
-
-    // Validação básica dos campos
     if (login.isEmpty() || password.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Preenche o login e a password!");
+        javax.swing.JOptionPane.showMessageDialog(this, "Preenche o login e a password!");
         return;
     }
 
     try {
-        // Usa o DAO para autenticar — não faz SQL diretamente aqui
         Servicoes.UtilizadorDAO dao = new Servicoes.UtilizadorDAO();
         GestaoAcademia.Utilizador utilizador = dao.autenticar(login, password);
 
         if (utilizador == null) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Login ou password incorretos!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Login ou password incorretos!");
             return;
         }
 
-        // Guarda na Sessao para qualquer JFrame poder aceder
-        //GestaoAcademia.Sessao.setUtilizadorAtual(utilizador);
+        GestaoAcademia.Sessao.setUtilizadorAtual(utilizador);
 
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Bem-vindo, " + utilizador.getNome() + "!");
-
-        // Verifica se é primeiro login → obriga a alterar senha
         if (utilizador.isPrimeiroLogin()) {
-            //new AlterarSenha(utilizador).setVisible(true);
+            new AlterarSenha().setVisible(true);
+            this.dispose();
         } else {
-            // Abre o painel correto conforme o tipo
             if (GestaoAcademia.Sessao.eTreinador()) {
                 new PainelTreinador().setVisible(true);
             } else {
                 new PainelCliente().setVisible(true);
             }
+            this.dispose();
         }
 
-        this.dispose(); // fecha o Login
-
     } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Erro de ligação: " + e.getMessage());
-    }}
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro de ligação: " + e.getMessage());
+    }
+
+
     }//GEN-LAST:event_btnEntrarActionPerformed
-
-    private void txtDigiteSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDigiteSenhaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDigiteSenhaActionPerformed
-
-    private void txtNovaPalavraPasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNovaPalavraPasseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNovaPalavraPasseActionPerformed
-
-    private void txtConfirmarPasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConfirmarPasseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtConfirmarPasseActionPerformed
-
-    private void btnAlterarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAlterarPassActionPerformed
 
     /**
      * @param args the command line arguments
@@ -270,19 +168,11 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAlterarPass;
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel pnlAlterarSenha;
     private javax.swing.JTextField txtAdicionarRegistro;
-    private javax.swing.JTextField txtConfirmarPasse;
-    private javax.swing.JTextField txtDigiteSenha;
-    private javax.swing.JTextField txtNovaPalavraPasse;
     private javax.swing.JTextField txtSenha;
     // End of variables declaration//GEN-END:variables
 }
