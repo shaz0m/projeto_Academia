@@ -1,33 +1,38 @@
-
 package GestaoAcademia;
 
+/**
+ * Representa um Treinador do ginásio.
+ * Herda de Utilizador, acrescentando a especialidade do treinador.
+ * @author wende
+ */
+public class Treinador extends Utilizador {
 
-public class Treinador {
-    private Integer id;
-    private Integer Cliente_id; 
-    
-    //FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+    private String especialidade;
 
-    public Treinador(Integer id, Integer Cliente_id) {
-        this.id = id;
-        this.Cliente_id = Cliente_id;
+    /**
+     * Construtor do Treinador.
+     * @param id identificador único
+     * @param nome nome completo
+     * @param login username
+     * @param password password
+     * @param especialidade área de especialização (ex: Musculação)
+     */
+    public Treinador(Integer id, String nome, String login,
+                     String password, String especialidade) {
+   
+        this.especialidade = especialidade;
     }
 
-    public Integer getId() {
-        return id;
+    public String getEspecialidade() { 
+        return especialidade; 
+    }
+    public void setEspecialidade(String especialidade) { 
+        this.especialidade = especialidade; 
     }
 
-    public Integer getCliente_id() {
-        return Cliente_id;
+    @Override
+    public String toString() {
+        return "Treinador{id=" + getId() + ", nome=" + getNome() +
+               ", especialidade=" + especialidade + '}';
     }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setCliente_id(Integer Cliente_id) {
-        this.Cliente_id = Cliente_id;
-    }
-    
-    
 }

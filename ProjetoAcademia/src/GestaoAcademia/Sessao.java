@@ -1,34 +1,58 @@
-package GestaoAcademia;
+package Sessao;
 
+import GestaoAcademia.Utilizador;
+import GestaoAcademia.Cliente;
+import GestaoAcademia.Treinador;
+
+/**
+ * Guarda o utilizador autenticado durante a sessão.
+ * Qualquer classe do programa pode consultar quem está logado.
+ * Usa atributos static para existir uma única instância global.
+ * @author wende
+ */
 public class Sessao {
-    private Integer id;
-    private String nome;
-    private java.time.LocalDateTime dataHoraInicio;
-    private Integer duracao;       // em minutos
-    private Integer capacidade;
-    private Integer treinador_id;
 
-    public Sessao(Integer id, String nome, java.time.LocalDateTime dataHoraInicio,
-                  Integer duracao, Integer capacidade, Integer treinador_id) {
-        this.id = id;
-        this.nome = nome;
-        this.dataHoraInicio = dataHoraInicio;
-        this.duracao = duracao;
-        this.capacidade = capacidade;
-        this.treinador_id = treinador_id;
+    private static Utilizador utilizadorAtual;
+
+    public static Utilizador getUtilizadorAtual() {
+        return utilizadorAtual;
     }
 
-    public Integer getId() { return id; }
-    public String getNome() { return nome; }
-    public java.time.LocalDateTime getDataHoraInicio() { return dataHoraInicio; }
-    public Integer getDuracao() { return duracao; }
-    public Integer getCapacidade() { return capacidade; }
-    public Integer getTreinador_id() { return treinador_id; }
+    public static void setUtilizadorAtual(Utilizador u) {
+        utilizadorAtual = u;
+    }
 
-    public void setId(Integer id) { this.id = id; }
-    public void setNome(String nome) { this.nome = nome; }
-    public void setDataHoraInicio(java.time.LocalDateTime d) { this.dataHoraInicio = d; }
-    public void setDuracao(Integer duracao) { this.duracao = duracao; }
-    public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
-    public void setTreinador_id(Integer treinador_id) { this.treinador_id = treinador_id; }
-}
+    public static void terminarSessao() {
+        utilizadorAtual = null;
+    }
+
+    /**
+     * Verifica se o utilizador logado é treinador.
+     * Usa instanceof para verificar o tipo real do objeto.
+     */
+    public static boolean eTreinador() {
+        return utilizadorAtual instanceof Treinador;
+    }
+
+    /**
+     * Devolve o utilizador como Cliente (se for cliente).
+     * @return Cliente ou null se for treinador
+     */
+    public static Cliente getClienteAtual() {
+        if (utilizadorAtual instanceof Cliente) {
+            return (Cliente) utilizadorAtual;
+        }
+        return null;
+    }
+
+    /**
+     * Devolve o utilizador como Treinador (se for treinador).
+     * @return Treinador ou null se for cliente
+     */
+    public static Treinador getTreinadorAtual() {
+        if (utilizadorAtual instanceof Treinador) {
+            return (Treinador) utilizadorAtual;
+        }
+        return null;
+    }
+} 

@@ -12,8 +12,7 @@ public class Cliente {
     private Integer utilizador_id;
     private String nome;
     private String email;
-    
-    private String telefone;           // "912345678"
+    private String telefone;  // "912345678"
     private java.time.LocalDate data_nascimento;  // data real
 
     public Cliente(Integer id, Integer utilizador_id, String nome, String email, String telefone, LocalDate data_nascimento) {
@@ -71,11 +70,5 @@ public class Cliente {
 
     public void setData_nascimento(LocalDate data_nascimento) {
         this.data_nascimento = data_nascimento;
-    }
-    
-    
-   
-    
-   
-   
+    }  
 }

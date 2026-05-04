@@ -1,26 +1,50 @@
 package GestaoAcademia;
 
-public class Inscricao {
-    private Integer id;
-    private Integer cliente_id;
-    private Integer aula_id;
-    private java.time.LocalDateTime dataInscricao;
+import java.time.LocalDateTime;
 
-    public Inscricao(Integer id, Integer cliente_id, Integer aula_id,
-                     java.time.LocalDateTime dataInscricao) {
+/**
+ * Representa a inscrição de um Cliente numa Aula.
+ * Liga um cliente a uma aula com uma data e estado.
+ * @author wende
+ */
+public class Inscricao {
+
+    private Integer id;
+    private Integer clienteId; 
+    private Integer aulaId;    
+    private LocalDateTime dataHora;
+    private String estado;      
+
+    public Inscricao(Integer id, Integer clienteId, Integer aulaId,
+                     LocalDateTime dataHora, String estado) {
         this.id = id;
-        this.cliente_id = cliente_id;
-        this.aula_id = aula_id;
-        this.dataInscricao = dataInscricao;
+        this.clienteId = clienteId;
+        this.aulaId = aulaId;
+        this.dataHora = dataHora;
+        this.estado = estado;
     }
 
-    public Integer getId() { return id; }
-    public Integer getCliente_id() { return cliente_id; }
-    public Integer getAula_id() { return aula_id; }
-    public java.time.LocalDateTime getDataInscricao() { return dataInscricao; }
+    public Integer getId(){
+        return id; 
+    }
+    public Integer getClienteId(){
+        return clienteId; 
+    }
+    public Integer getAulaId(){
+        return aulaId; 
+    }
+    public LocalDateTime getDataHora(){
+        return dataHora; 
+    }
+    public String getEstado(){
+        return estado; 
+    }
 
-    public void setId(Integer id) { this.id = id; }
-    public void setCliente_id(Integer cliente_id) { this.cliente_id = cliente_id; }
-    public void setAula_id(Integer aula_id) { this.aula_id = aula_id; }
-    public void setDataInscricao(java.time.LocalDateTime d) { this.dataInscricao = d; }
+    public void setEstado(String estado) { this.estado = estado; }
+
+    @Override
+    public String toString() {
+        return "Inscricao{id=" + id + ", cliente=" + clienteId +
+               ", aula=" + aulaId + ", estado=" + estado + '}';
+    }
 }
