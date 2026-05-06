@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package presentation.ui.guii;
 
 /**
@@ -17,6 +14,8 @@ public class PainelTreinador extends javax.swing.JFrame {
      */
     public PainelTreinador() {
         initComponents();
+        carregarAulas();
+        carregarClientes();
     }
 
     /**
@@ -29,19 +28,21 @@ public class PainelTreinador extends javax.swing.JFrame {
     private void initComponents() {
 
         btnNovoClientes = new javax.swing.JButton();
-        btnEditarAula = new javax.swing.JButton();
+        btnAdicionarAula = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTodasAulas = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblClientesRegistrados = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnNovoClientes.setText("NOVO CLIENTE ");
 
-        btnEditarAula.setText("EDITAR AULA");
+        btnAdicionarAula.setText("ADICIONAR AULA");
+        btnAdicionarAula.addActionListener(this::btnAdicionarAulaActionPerformed);
 
         tblTodasAulas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -63,13 +64,13 @@ public class PainelTreinador extends javax.swing.JFrame {
 
         tblClientesRegistrados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nome", "Email  ", "Telefone"
+                "Nome", "Email  ", "Telefone", "Inscrições "
             }
         ));
         jScrollPane2.setViewportView(tblClientesRegistrados);
@@ -78,6 +79,9 @@ public class PainelTreinador extends javax.swing.JFrame {
 
         jLabel2.setText("TODAS AS AULAS");
 
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,22 +89,27 @@ public class PainelTreinador extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnNovoClientes)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEditarAula))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(jLabel1))
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(43, 43, 43)
+                                        .addComponent(jLabel1))
+                                    .addComponent(jLabel2))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNovoClientes)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAdicionarAula)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCancelar)
+                        .addGap(35, 35, 35))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,7 +117,8 @@ public class PainelTreinador extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovoClientes)
-                    .addComponent(btnEditarAula))
+                    .addComponent(btnAdicionarAula)
+                    .addComponent(btnCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -123,9 +133,90 @@ public class PainelTreinador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnAdicionarAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarAulaActionPerformed
+        new AdicionarAula().setVisible(true);
+    }//GEN-LAST:event_btnAdicionarAulaActionPerformed
+private void carregarClientes() {
+    try {
+        java.sql.Connection con = conexao.Conexao.getConexao();
+
+        // Parâmetro: query SQL com LEFT JOIN e COUNT
+        // Âmbito: método privado — só acessível dentro de PainelTreinador (encapsulamento)
+        java.sql.ResultSet rs = con.createStatement().executeQuery(
+            "SELECT c.nome, c.email, c.telefone, COUNT(i.id) AS inscricoes " +
+            "FROM cliente c " +
+            "LEFT JOIN inscricao i ON c.id = i.cliente_id " +
+            "GROUP BY c.id, c.nome, c.email, c.telefone");
+
+        // DefaultTableModel — objeto que serve de modelo de dados para a JTable
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+            new String[]{"Nome", "Email", "Telefone", "Inscrições"}, 0);
+
+        // Iteração sobre o ResultSet — cada linha da BD torna-se uma linha na tabela
+        while (rs.next()) {
+            modelo.addRow(new Object[]{
+                rs.getString("nome"),
+                rs.getString("email"),
+                rs.getString("telefone"),
+                rs.getInt("inscricoes")
+            });
+        }
+        /*
+         Encapsulamento - tblClientesRegistrados é privado, só alterado por este método
+        */
+        
+        tblClientesRegistrados.setModel(modelo);
+
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+      }
+   }
+    private void carregarAulas() {
+    try {
+        java.sql.Connection con = conexao.Conexao.getConexao();
+        java.sql.ResultSet rs = con.createStatement().executeQuery(
+            "SELECT a.nome, a.data_hora_inicio, a.duracao, a.capacidade, " +
+            "COUNT(i.id) AS inscritos " +
+            "FROM aula a " +
+            "LEFT JOIN inscricao i ON a.id = i.aula_id " +
+            "GROUP BY a.id, a.nome, a.data_hora_inicio, a.duracao, a.capacidade");
+
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+            new String[]{"Nome", "Data/Hora", "Duração", "Vagas", "Inscritos", "Estado"}, 0);
+
+        while (rs.next()) {
+            int vagas     = rs.getInt("capacidade");
+            int inscritos = rs.getInt("inscritos");
+            String estado;
+
+            if (inscritos >= vagas) {
+                estado = "Lotada";
+            } else {
+                estado = "Disponivel";
+            }
+
+            modelo.addRow(new Object[]{
+                rs.getString("nome"),
+                rs.getString("data_hora_inicio"),
+                rs.getInt("duracao"),
+                vagas,
+                inscritos,
+                estado
+            });
+        }
+
+        tblTodasAulas.setModel(modelo);
+
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+    }
+}
+   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -149,7 +240,8 @@ public class PainelTreinador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditarAula;
+    private javax.swing.JButton btnAdicionarAula;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnNovoClientes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

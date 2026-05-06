@@ -1,21 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package presentation.ui.guii;
 
 /**
  *
  * @author wende
  */
-public class EditarAula extends javax.swing.JFrame {
+public class AdicionarAula extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditarAula.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdicionarAula.class.getName());
 
     /**
      * Creates new form CriarAula
      */
-    public EditarAula() {
+    public AdicionarAula() {
         initComponents();
     }
 
@@ -58,6 +55,7 @@ public class EditarAula extends javax.swing.JFrame {
         btnAdicionarDados.setText("GUARDAR");
 
         btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
         jLabel1.setText("Nome da Aula");
 
@@ -69,7 +67,7 @@ public class EditarAula extends javax.swing.JFrame {
 
         jLabel5.setText("Treinador");
 
-        jLabel6.setText("EDITAR AULA");
+        jLabel6.setText("CRIAR NOVA AULA ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,6 +141,11 @@ public class EditarAula extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       new PainelTreinador().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -165,7 +168,7 @@ public class EditarAula extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new EditarAula().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new AdicionarAula().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

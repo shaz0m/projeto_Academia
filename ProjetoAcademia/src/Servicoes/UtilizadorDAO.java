@@ -35,7 +35,9 @@ public class UtilizadorDAO {
                 boolean primLogin = rs.getBoolean("primeiro_login");
 
                 if (tipo.equals("treinador")) {
-                    // especialidade está na tabela treinador, não em utilizador
+                    /*
+                     especialidade está na tabela treinador, não em utilizador
+                    */
                     Treinador t = new Treinador(id, nome, login, password, "");
                     t.setPrimeiroLogin(primLogin);
                     return t;

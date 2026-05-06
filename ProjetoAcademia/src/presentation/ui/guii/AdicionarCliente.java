@@ -8,14 +8,14 @@ package presentation.ui.guii;
  *
  * @author wende
  */
-public class EditarPerfil extends javax.swing.JFrame {
+public class AdicionarCliente extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditarPerfil.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdicionarCliente.class.getName());
 
     /**
      * Creates new form EditarPerfil
      */
-    public EditarPerfil() {
+    public AdicionarCliente() {
         initComponents();
     }
 
@@ -56,7 +56,7 @@ public class EditarPerfil extends javax.swing.JFrame {
 
         btnCancelar.setText("CANCELAR");
 
-        jLabel5.setText("EDITAR PERFIL");
+        jLabel5.setText("ADICIONAR CLIENTE ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -144,7 +144,7 @@ public class EditarPerfil extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new EditarPerfil().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new AdicionarCliente().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
