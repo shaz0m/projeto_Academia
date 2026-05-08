@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package presentation.ui.guii;
 
 /**
@@ -42,7 +39,13 @@ public class AdicionarCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        txtNome.addActionListener(this::txtNomeActionPerformed);
+
+        txtEmail.addActionListener(this::txtEmailActionPerformed);
+
         txtTelefone.addActionListener(this::txtTelefoneActionPerformed);
+
+        txtDataNascimento.addActionListener(this::txtDataNascimentoActionPerformed);
 
         jLabel1.setText("Nome");
 
@@ -53,8 +56,10 @@ public class AdicionarCliente extends javax.swing.JFrame {
         jLabel4.setText("Data Nascimento ");
 
         btnGuardar.setText("GUARDAR");
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
         jLabel5.setText("ADICIONAR CLIENTE ");
 
@@ -119,8 +124,61 @@ public class AdicionarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefoneActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtTelefoneActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        
+       try {
+        java.sql.Connection con = conexao.Conexao.getConexao();
+
+        // cria o utilizador
+        java.sql.PreparedStatement ps1 = con.prepareStatement(
+            "INSERT INTO utilizador (username, password, nome, tipo_utilizador) VALUES (?, '1234', ?, 'cliente')",
+            java.sql.Statement.RETURN_GENERATED_KEYS);
+        ps1.setString(1, txtNome.getText());
+        ps1.setString(2, txtEmail.getText());
+        ps1.executeUpdate();
+
+        // pega o id gerado
+        java.sql.ResultSet rs = ps1.getGeneratedKeys();
+        rs.next();
+        int id = rs.getInt(1);
+
+        // cria o cliente
+        java.sql.PreparedStatement ps2 = con.prepareStatement(
+            "INSERT INTO cliente (utilizador_id, nome, email, telefone, data_nascimento) VALUES (?, ?, ?, ?, ?)");
+        ps2.setInt(1, id);
+        ps2.setString(2, txtNome.getText());
+        ps2.setString(3, txtEmail.getText());
+        ps2.setString(4, txtTelefone.getText());
+        ps2.setString(5, txtDataNascimento.getText());
+        ps2.executeUpdate();
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Cliente adicionado!");
+        this.dispose();
+
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
+     
+    }//GEN-LAST:event_txtNomeActionPerformed
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void txtDataNascimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataNascimentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDataNascimentoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        new PainelTreinador().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
