@@ -100,37 +100,85 @@ public class PainelCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscreverActionPerformed
-        int linha = tblAulasDisponiveis.getSelectedRow();
+   
+     /*
+         verifica se o utilizador selecionou uma linha na tabela
+     */   
+     
+    int linhasSelecionada = tblAulasDisponiveis.getSelectedRow();
 
-    if (linha == -1) {
+    if (linhasSelecionada == -1) {
         javax.swing.JOptionPane.showMessageDialog(null, "Seleciona uma aula!");
         return;
     }
-
-    String nomeAula = tblAulasDisponiveis.getValueAt(linha, 0).toString();
+     /*
+     pega o nome da aula na coluna 0 da linha selecionada
+    */
+    String nomeAulaEscolhida = tblAulasDisponiveis.getValueAt(linhasSelecionada, 0).toString().trim();
 
     try {
+        /*
+        abre ligação à base de dados
+        */
+                
+        java.sql.Connection ligacaoBaseDados = conexao.Conexao.getConexao();
+         
+        /*
+        PROCURAR O ID DA AULA
+        */
         
-        java.sql.Connection ligacao = conexao.Conexao.getConexao();
-        java.sql.Statement stmt = ligacao.createStatement();
+        java.sql.Statement statementAula = ligacaoBaseDados.createStatement();
+        
+        java.sql.ResultSet resultadoAula = statementAula.executeQuery(
+        "SELECT id FROM aula WHERE nome LIKE '%" + nomeAulaEscolhida + "%'" 
+        );
+        
+       /**
+       * Verifica se a query encontrou a aula na base de dados.
+       * Se o ResultSet estiver vazio, o next() retorna false
+       * e o programa para aqui com uma mensagem de erro.
+       */
+       if (!resultadoAula.next()) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Aula não encontrada! Nome buscado: [" + nomeAulaEscolhida + "]");
+         return;
+         }
+         int idDaAula = resultadoAula.getInt("id");
+         /*
+         PROCURAR O ID DO CLIENTE 
+        */
+       
+        GestaoAcademia.Utilizador utilizadorAtual = GestaoAcademia.Sessao.getUtilizadorAtual();
 
-        java.sql.ResultSet rsAula = stmt.executeQuery("SELECT id FROM aula WHERE nome = '" + nomeAula + "'");
-        rsAula.next();
-        int aulaId = rsAula.getInt("id");
+        java.sql.Statement statementCliente = ligacaoBaseDados.createStatement();
+        java.sql.ResultSet resultadoCliente = statementCliente.executeQuery(
+            "SELECT id FROM cliente WHERE utilizador_id = " + utilizadorAtual.getId()
+        );
+      /**
+      * Verifica se o cliente existe na base de dados
+      * com o utilizador_id da sessão atual.
+      * Se não existir, o programa para aqui com uma mensagem de erro.
+      */
+      if (!resultadoCliente.next()) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Cliente não encontrado! ID utilizador: [" + utilizadorAtual.getId() + "]");
+       return;
+       }
+        int idDoCliente = resultadoCliente.getInt("id");
+        /*
+        INSERIR A INSCRIÇÃO
+        */     
+       
+        java.sql.Statement statementInscricao = ligacaoBaseDados.createStatement();
+        statementInscricao.executeUpdate(
+            "INSERT INTO inscricao (cliente_id, aula_id, data_inscricao) VALUES ("
+            + idDoCliente + ", " + idDaAula + ", NOW())"
+        );
 
-        GestaoAcademia.Utilizador u = GestaoAcademia.Sessao.getUtilizadorAtual();
+        javax.swing.JOptionPane.showMessageDialog(null, "Inscrito com sucesso: " + nomeAulaEscolhida);
 
-        java.sql.ResultSet rsCliente = stmt.executeQuery("SELECT id FROM cliente WHERE utilizador_id = " + u.getId());
-        rsCliente.next();
-        int clienteId = rsCliente.getInt("id");
-
-        stmt.executeUpdate("INSERT INTO inscricao (cliente_id, aula_id, data_inscricao) VALUES (" + clienteId + ", " + aulaId + ", NOW())");
-
-        javax.swing.JOptionPane.showMessageDialog(null, "Inscrito com sucesso: " + nomeAula);
-
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
+    } catch (java.sql.SQLException erroBaseDados) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Erro: " + erroBaseDados.getMessage());
     }
+
     }//GEN-LAST:event_btnInscreverActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -146,6 +194,7 @@ private void carregarAulas() {
     try {
         java.sql.Connection ligacao = conexao.Conexao.getConexao();
         java.sql.Statement stmt = ligacao.createStatement();
+        
         java.sql.ResultSet rs = stmt.executeQuery("SELECT a.nome, a.data_hora_inicio, a.duracao, a.capacidade, u.username FROM aula a JOIN treinador t ON a.treinador_id = t.id JOIN utilizador u ON t.utilizador_id = u.id");
 
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
@@ -169,24 +218,7 @@ private void carregarAulas() {
 }
 
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+     
         java.awt.EventQueue.invokeLater(() -> new PainelCliente().setVisible(true));
     }
 
