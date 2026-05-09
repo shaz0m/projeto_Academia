@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package presentation.ui.guii;
 
-/**
- *
- * @author wende
- */
+
 public class AlterarSenha extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AlterarSenha.class.getName());
@@ -139,75 +133,82 @@ public class AlterarSenha extends javax.swing.JFrame {
     }//GEN-LAST:event_txtConfirmarPasseActionPerformed
 
     private void btnAlterarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPassActionPerformed
-        // TODO add your handprivate void btnAlterarPassActionPerformed(java.awt.event.ActionEvent evt) {
-
-        String senhaAtual     = txtDigiteSenha.getText();
-        String novaSenha      = txtNovaPalavraPasse.getText();
-        String confirmarSenha = txtConfirmarPasse.getText();
-
-     if (senhaAtual.isEmpty() || novaSenha.isEmpty() || confirmarSenha.isEmpty()) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Preenche todos os campos!");
-    return;
-   }
-     if (!novaSenha.equals(confirmarSenha)) {
-    javax.swing.JOptionPane.showMessageDialog(this, "As senhas não coincidem!");
-    return;
-   }
-     if (novaSenha.length() < 6) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Mínimo 6 caracteres!");
-    return;
-   }
-
-    try {
-    Servicoes.UtilizadorDAO dao = new Servicoes.UtilizadorDAO();
-    GestaoAcademia.Utilizador u = GestaoAcademia.Sessao.getUtilizadorAtual();
-
-    if (!u.getPassword().equals(senhaAtual)) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Senha atual incorreta!");
-        return;
-    }
-
-    dao.alterarPassword(u.getId(), novaSenha);
-    u.setPassword(novaSenha);
-    u.setPrimeiroLogin(false);
-
-    javax.swing.JOptionPane.showMessageDialog(this, "Senha alterada com sucesso!");
-
-    if (GestaoAcademia.Sessao.eTreinador()) {
-        new PainelTreinador().setVisible(true);
-    } else {
-        new PainelCliente().setVisible(true);
-    }
-    this.dispose();
-
-} catch (java.sql.SQLException e) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
-}
-
-    }//GEN-LAST:event_btnAlterarPassActionPerformed
+       
+    //pega o texto escrito em cada campo
+    String senhaAtual = txtDigiteSenha.getText();
+    String novaSenha = txtNovaPalavraPasse.getText();
+    String confirmarSenha = txtConfirmarPasse.getText();
 
     /**
-     * @param args the command line arguments
+     * isEmpty() verifica se o campo está completamente vazio (zero caracteres).
+     * Se qualquer campo estiver vazio, avisa e para.
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    if (senhaAtual.isEmpty() || novaSenha.isEmpty() || confirmarSenha.isEmpty()) {
+         javax.swing.JOptionPane.showMessageDialog(this, "Preenche todos os campos!");
+        return;
+       }
 
-        /* Create and display the form */
+    /**
+     * equals() compara o conteúdo de duas Strings.
+     * Verifica se a nova senha e a confirmação são iguais.
+     */
+    if (!novaSenha.equals(confirmarSenha)) {
+          javax.swing.JOptionPane.showMessageDialog(this, "As senhas não coincidem!");
+     return;
+    }
+    /**
+     * length() retorna o número de caracteres da String.
+     * Verifica se a nova senha tem pelo menos 6 caracteres.
+     */
+    if (novaSenha.length() < 6) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Mínimo 6 caracteres!");
+        return;
+    }
+    
+    try {
+        // cria o objeto DAO que faz as operações na base de dados
+        Servicoes.UtilizadorDAO dao = new Servicoes.UtilizadorDAO();
+
+        // pega o utilizador que está atualmente com sessão iniciada
+        GestaoAcademia.Utilizador utilizador = GestaoAcademia.Sessao.getUtilizadorAtual();
+        /**
+         * equals() compara a senha guardada na sessão
+         * com a senha que o utilizador digitou no campo.
+         * Se não forem iguais, a senha atual está errada.
+         */
+        if (!utilizador.getPassword().equals(senhaAtual)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Senha atual incorreta!");
+            return;
+        }
+
+        // atualiza a senha na base de dados
+        dao.alterarPassword(utilizador.getId(), novaSenha);
+
+        // atualiza também o objeto em memória para ficar consistente
+        utilizador.setPassword(novaSenha);
+        utilizador.setPrimeiroLogin(false);
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Senha alterada com sucesso!");
+
+        /**
+         * Redireciona para o painel correto consoante o tipo de utilizador.
+         * eTreinador() verifica o tipo guardado na sessão atual.
+         */
+        if (GestaoAcademia.Sessao.eTreinador()) {
+            new PainelTreinador().setVisible(true);
+        } else {
+            new PainelCliente().setVisible(true);
+        }
+        // fecha esta janela
+        this.dispose();
+
+    } catch (java.sql.SQLException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnAlterarPassActionPerformed
+
+    public static void main(String args[]) {
+       
         java.awt.EventQueue.invokeLater(() -> new AlterarSenha().setVisible(true));
     }
 

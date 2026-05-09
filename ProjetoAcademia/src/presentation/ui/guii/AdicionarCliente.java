@@ -129,37 +129,65 @@ public class AdicionarCliente extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
-       try {
-        java.sql.Connection con = conexao.Conexao.getConexao();
+     // pega o texto escrito em cada campo
+    String nomeDoCliente = txtNome.getText();
+    String emailDoCliente = txtEmail.getText();
+    String telefoneDoCliente = txtTelefone.getText();
+    String nascimentoDoCliente = txtDataNascimento.getText();
 
-        // cria o utilizador
-        java.sql.PreparedStatement ps1 = con.prepareStatement(
-            "INSERT INTO utilizador (username, password, nome, tipo_utilizador) VALUES (?, '1234', ?, 'cliente')",
-            java.sql.Statement.RETURN_GENERATED_KEYS);
-        ps1.setString(1, txtNome.getText());
-        ps1.setString(2, txtEmail.getText());
-        ps1.executeUpdate();
+    try {
+        // abre ligação à base de dados
+        java.sql.Connection ligacaoBaseDados = conexao.Conexao.getConexao();
 
-        // pega o id gerado
-        java.sql.ResultSet rs = ps1.getGeneratedKeys();
-        rs.next();
-        int id = rs.getInt(1);
+        // cria o statement para executar queries
+        java.sql.Statement statementVerificacao = ligacaoBaseDados.createStatement();
 
-        // cria o cliente
-        java.sql.PreparedStatement ps2 = con.prepareStatement(
-            "INSERT INTO cliente (utilizador_id, nome, email, telefone, data_nascimento) VALUES (?, ?, ?, ?, ?)");
-        ps2.setInt(1, id);
-        ps2.setString(2, txtNome.getText());
-        ps2.setString(3, txtEmail.getText());
-        ps2.setString(4, txtTelefone.getText());
-        ps2.setString(5, txtDataNascimento.getText());
-        ps2.executeUpdate();
+        /**
+         * Verifica se já existe um utilizador com o mesmo nome.
+         * Se o ResultSet tiver resultados, o nome já está em uso.
+         */
+        java.sql.ResultSet resultadoVerificacao = statementVerificacao.executeQuery(
+            "SELECT id FROM utilizador WHERE username = '" + nomeDoCliente + "'");
+
+        if (resultadoVerificacao.next()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Já existe um cliente com esse nome!");
+            return;
+        }
+
+        /**
+         * Insere o novo utilizador na tabela utilizador.
+         * O username é o nome, a password padrão é '1234' e o tipo é 'cliente'.
+         */
+        java.sql.Statement statementUtilizador = ligacaoBaseDados.createStatement();
+        statementUtilizador.executeUpdate(
+            "INSERT INTO utilizador (username, password, nome, tipo_utilizador) " +
+            "VALUES ('" + nomeDoCliente + "', '1234', '" + nomeDoCliente + "', 'cliente')");
+
+        /**
+         * LAST_INSERT_ID() devolve o id gerado automaticamente
+         * pelo último INSERT feito na base de dados.
+         */
+        java.sql.Statement statementIdGerado = ligacaoBaseDados.createStatement();
+        java.sql.ResultSet resultadoIdGerado  = statementIdGerado.executeQuery("SELECT LAST_INSERT_ID()");
+        resultadoIdGerado.next();
+        int idDoUtilizador = resultadoIdGerado.getInt(1);
+
+        /**
+         * Insere o cliente na tabela cliente ligado ao utilizador
+         * através do id gerado anteriormente.
+         */
+        java.sql.Statement statementCliente = ligacaoBaseDados.createStatement();
+        statementCliente.executeUpdate(
+            "INSERT INTO cliente (utilizador_id, nome, email, telefone, data_nascimento) " +
+            "VALUES (" + idDoUtilizador + ", '" + nomeDoCliente + "', '" + emailDoCliente + "', '" + telefoneDoCliente + "', '" + nascimentoDoCliente + "')");
 
         javax.swing.JOptionPane.showMessageDialog(this, "Cliente adicionado!");
+
+        // fecha esta janela
         this.dispose();
 
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+    } catch (java.sql.SQLException erroBaseDados) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + erroBaseDados.getMessage());
     }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
