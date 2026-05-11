@@ -12,10 +12,10 @@ import java.util.function.Predicate;
  */
 public class ArrayAcademia<E> extends ArrayList<E> {
 
-    public static final String ADICIONAR_ITEM  = "ADD_ITEM";
-    public static final String REMOVER_ITEM    = "REMOVE_ITEM";
-    public static final String LIMPAR_ITENS    = "CLEAR_ITEMS";
-    public static final String ALTERAR_ITEM    = "CHANGE_ITEM";
+    public static final String ADICIONAR_ITEM = "ADD_ITEM";
+    public static final String REMOVER_ITEM = "REMOVE_ITEM";
+    public static final String LIMPAR_ITENS = "CLEAR_ITEMS";
+    public static final String ALTERAR_ITEM = "CHANGE_ITEM";
 
     private final PropertyChangeSupport suporteEventos;
 

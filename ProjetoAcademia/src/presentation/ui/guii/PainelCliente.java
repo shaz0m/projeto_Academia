@@ -1,4 +1,3 @@
-
 package presentation.ui.guii;
 
 /**
@@ -6,7 +5,7 @@ package presentation.ui.guii;
  * @author wende
  */
 public class PainelCliente extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PainelCliente.class.getName());
 
     /**
@@ -15,10 +14,9 @@ public class PainelCliente extends javax.swing.JFrame {
     public PainelCliente() {
         initComponents();
         carregarAulas();
-       // inscreverNaAula();
+        // inscreverNaAula();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -100,78 +98,45 @@ public class PainelCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscreverActionPerformed
-   
-      /**
-     * getSelectedRow() devolve o número da linha selecionada.
-     * Se nenhuma linha estiver selecionada devolve -1.
-     */
-    int linhaSelecionada = tblAulasDisponiveis.getSelectedRow();
 
-    if (linhaSelecionada == -1) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Seleciona uma aula!");
-        return;
-    }
+        int linhaEscolhida = tblAulasDisponiveis.getSelectedRow();
 
-    /**
-     * getValueAt() pega o valor de uma célula da tabela.
-     * Coluna 0 é a coluna do Nome da aula.
-     * trim() remove espaços em branco no início e no fim.
-     */
-    String nomeAulaEscolhida = tblAulasDisponiveis.getValueAt(linhaSelecionada, 0).toString().trim();
-
-    try {
-        // abre ligação à base de dados
-        java.sql.Connection ligacaoBaseDados = conexao.Conexao.getConexao();
-
-        /**
-         * PROCURAR O ID DA AULA.
-         * LIKE '% %' procura o nome mesmo que esteja truncado na tabela visual.
-         */
-        java.sql.Statement statementAula = ligacaoBaseDados.createStatement();
-        java.sql.ResultSet resultadoAula = statementAula.executeQuery(
-            "SELECT id FROM aula WHERE nome LIKE '%" + nomeAulaEscolhida + "%'");
-
-        /**
-         * next() avança para a próxima linha do ResultSet.
-         * Se retornar false significa que a query não encontrou nenhum resultado.
-         */
-        if (!resultadoAula.next()) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Aula não encontrada! Nome buscado: [" + nomeAulaEscolhida + "]");
+        if (linhaEscolhida == -1) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleciona uma aula!");
             return;
         }
-        int idDaAula = resultadoAula.getInt("id");
 
-        /**
-         * PROCURAR O ID DO CLIENTE.
-         * getUtilizadorAtual() devolve o utilizador que fez login.
-         * getId() devolve o id desse utilizador.
-         */
-        GestaoAcademia.Utilizador utilizadorAtual = GestaoAcademia.Sessao.getUtilizadorAtual();
+        String nomeAula = tblAulasDisponiveis.getValueAt(linhaEscolhida, 0).toString();
 
-        java.sql.Statement statementCliente = ligacaoBaseDados.createStatement();
-        java.sql.ResultSet resultadoCliente = statementCliente.executeQuery(
-            "SELECT id FROM cliente WHERE utilizador_id = " + utilizadorAtual.getId());
-
-        if (!resultadoCliente.next()) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Cliente não encontrado! ID utilizador: [" + utilizadorAtual.getId() + "]");
+        // length() verifica se o nome nao esta vazio
+        if (nomeAula.length() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Aula invalida!");
             return;
         }
-        int idDoCliente = resultadoCliente.getInt("id");
 
-        /**
-         * INSERIR A INSCRIÇÃO.
-         * NOW() é uma função do MySQL que insere a data e hora atual.
-         */
-        java.sql.Statement statementInscricao = ligacaoBaseDados.createStatement();
-        statementInscricao.executeUpdate(
-            "INSERT INTO inscricao (cliente_id, aula_id, data_inscricao) VALUES ("
-            + idDoCliente + ", " + idDaAula + ", NOW())");
+        try {
+            java.sql.Connection ligacao = conexao.Conexao.getConexao();
 
-        javax.swing.JOptionPane.showMessageDialog(null, "Inscrito com sucesso: " + nomeAulaEscolhida);
+            java.sql.ResultSet resultadoAula = ligacao.createStatement().executeQuery(
+                    "SELECT id FROM aula WHERE nome = '" + nomeAula + "'");
+            resultadoAula.next();
+            int idAula = resultadoAula.getInt("id");
 
-    } catch (java.sql.SQLException erroBaseDados) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Erro: " + erroBaseDados.getMessage());
-    }
+            GestaoAcademia.Utilizador utilizador = GestaoAcademia.Sessao.getUtilizadorAtual();
+            java.sql.ResultSet resultadoCliente = ligacao.createStatement().executeQuery(
+                    "SELECT id FROM cliente WHERE utilizador_id = " + utilizador.getId());
+            resultadoCliente.next();
+            int idCliente = resultadoCliente.getInt("id");
+
+            ligacao.createStatement().executeUpdate(
+                    "INSERT INTO inscricao (cliente_id, aula_id, data_inscricao) VALUES ("
+                    + idCliente + ", " + idAula + ", NOW())");
+
+            javax.swing.JOptionPane.showMessageDialog(null, "Inscrito com sucesso: " + nomeAula);
+
+        } catch (java.sql.SQLException erro) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Erro: " + erro.getMessage());
+        }
 
     }//GEN-LAST:event_btnInscreverActionPerformed
 
@@ -180,53 +145,52 @@ public class PainelCliente extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
- 
     /**
- * Carrega as aulas disponíveis da base de dados e mostra na tabela.
- */
-private void carregarAulas() {
-    try {
-        // abre ligação à base de dados
-        java.sql.Connection ligacaoBaseDados = conexao.Conexao.getConexao();
+     * Carrega as aulas disponíveis da base de dados e mostra na tabela.
+     */
+    private void carregarAulas() {
+        try {
+            // abre ligação à base de dados
+            java.sql.Connection ligacaoBaseDados = conexao.Conexao.getConexao();
 
-        // cria o statement para executar a query
-        java.sql.Statement statementAulas = ligacaoBaseDados.createStatement();
+            // cria o statement para executar a query
+            java.sql.Statement statementAulas = ligacaoBaseDados.createStatement();
 
-        // busca todas as aulas com o nome do treinador
-        java.sql.ResultSet resultadoAulas = statementAulas.executeQuery(
-            "SELECT a.nome, a.data_hora_inicio, a.duracao, a.capacidade, u.username " +
-            "FROM aula a " +
-            "JOIN treinador t ON a.treinador_id = t.id " +
-            "JOIN utilizador u ON t.utilizador_id = u.id");
+            // busca todas as aulas com o nome do treinador
+            java.sql.ResultSet resultadoAulas = statementAulas.executeQuery(
+                    "SELECT a.nome, a.data_hora_inicio, a.duracao, a.capacidade, u.username "
+                    + "FROM aula a "
+                    + "JOIN treinador t ON a.treinador_id = t.id "
+                    + "JOIN utilizador u ON t.utilizador_id = u.id");
 
-        /**
-         * DefaultTableModel é o objeto que guarda os dados da tabela visual.
-         * Cada linha do ResultSet torna-se uma linha na tabela.
-         */
-        javax.swing.table.DefaultTableModel modeloTabela = new javax.swing.table.DefaultTableModel(
-            new String[]{"Nome", "Data/Hora", "Duração", "Vagas", "Treinador"}, 0);
+            /**
+             * DefaultTableModel é o objeto que guarda os dados da tabela
+             * visual. Cada linha do ResultSet torna-se uma linha na tabela.
+             */
+            javax.swing.table.DefaultTableModel modeloTabela = new javax.swing.table.DefaultTableModel(
+                    new String[]{"Nome", "Data/Hora", "Duração", "Vagas", "Treinador"}, 0);
 
-        // percorre os resultados e adiciona cada linha à tabela
-        while (resultadoAulas.next()) {
-            modeloTabela.addRow(new Object[]{
-                resultadoAulas.getString("nome"),
-                resultadoAulas.getString("data_hora_inicio"),
-                resultadoAulas.getInt("duracao"),
-                resultadoAulas.getInt("capacidade"),
-                resultadoAulas.getString("username")
-            });
+            // percorre os resultados e adiciona cada linha à tabela
+            while (resultadoAulas.next()) {
+                modeloTabela.addRow(new Object[]{
+                    resultadoAulas.getString("nome"),
+                    resultadoAulas.getString("data_hora_inicio"),
+                    resultadoAulas.getInt("duracao"),
+                    resultadoAulas.getInt("capacidade"),
+                    resultadoAulas.getString("username")
+                });
+            }
+
+            // aplica o modelo à tabela visual
+            tblAulasDisponiveis.setModel(modeloTabela);
+
+        } catch (java.sql.SQLException erroBaseDados) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + erroBaseDados.getMessage());
         }
-
-        // aplica o modelo à tabela visual
-        tblAulasDisponiveis.setModel(modeloTabela);
-
-    } catch (java.sql.SQLException erroBaseDados) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + erroBaseDados.getMessage());
     }
-}
 
     public static void main(String args[]) {
-     
+
         java.awt.EventQueue.invokeLater(() -> new PainelCliente().setVisible(true));
     }
 

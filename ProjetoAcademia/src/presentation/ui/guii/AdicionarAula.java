@@ -172,20 +172,20 @@ public class AdicionarAula extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-       new PainelTreinador().setVisible(true);
+        new PainelTreinador().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtAdicionarNomeAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAdicionarNomeAulaActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtAdicionarNomeAulaActionPerformed
 
     private void txtHoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHoraActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtHoraActionPerformed
 
     private void txtDuracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDuracaoActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtDuracaoActionPerformed
 
     private void txtCapacidadeMaximaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCapacidadeMaximaActionPerformed
@@ -193,30 +193,50 @@ public class AdicionarAula extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCapacidadeMaximaActionPerformed
 
     private void btnAdicionarDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarDadosActionPerformed
+        
         try {
-        String selecionado = cmbTreinadores.getSelectedItem().toString();
-        int treinadorId = Integer.parseInt(selecionado.split(" - ")[0]);
+    // pega o treinador selecionado no combobox
+    String treinadorSelecionado = cmbTreinadores.getSelectedItem().toString();
 
-        // junta data e hora no formato correto
-        String dataHora = txtData.getText() + " " + txtHora.getText();
+    // indexOf encontra a posição do " - " no texto
+    int posicaoDoTraco = treinadorSelecionado.indexOf(" - ");
 
-        java.sql.Connection con = conexao.Conexao.getConexao();
-        java.sql.PreparedStatement ps = con.prepareStatement(
-            "INSERT INTO aula (nome, data_hora_inicio, duracao, capacidade, treinador_id) VALUES (?, ?, ?, ?, ?)");
+    // substring pega o texto desde o início até à posição do traço
+    String idEmTexto = treinadorSelecionado.substring(0, posicaoDoTraco);
 
-        ps.setString(1, txtAdicionarNomeAula.getText());
-        ps.setString(2, dataHora);
-        ps.setInt(3, Integer.parseInt(txtDuracao.getText()));
-        ps.setInt(4, Integer.parseInt(txtCapacidadeMaxima.getText()));
-        ps.setInt(5, treinadorId);
-        ps.executeUpdate();
+    // converte o texto para número
+    int idDoTreinador = Integer.parseInt(idEmTexto);
 
-        javax.swing.JOptionPane.showMessageDialog(this, "Aula adicionada com sucesso!");
-        this.dispose();
+    // pega os valores dos campos
+    String nomeDaAula = txtAdicionarNomeAula.getText();
+    String dataDaAula = txtData.getText();
+    String horaDaAula = txtHora.getText();
+    String duracaoDaAula = txtDuracao.getText();
+    String capacidadeDaAula = txtCapacidadeMaxima.getText();
 
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
-    }
+    // junta data e hora
+    String dataEHoraDaAula = dataDaAula + " " + horaDaAula;
+
+    // abre ligação à base de dados
+    java.sql.Connection ligacaoBaseDados = conexao.Conexao.getConexao();
+    java.sql.Statement statementAula = ligacaoBaseDados.createStatement();
+
+    // insere a aula na base de dados
+    statementAula.executeUpdate(
+        "INSERT INTO aula (nome, data_hora_inicio, duracao, capacidade, treinador_id) VALUES ('"
+        + nomeDaAula + "', '"
+        + dataEHoraDaAula  + "', "
+        + duracaoDaAula    + ", "
+        + capacidadeDaAula + ", "
+        + idDoTreinador    + ")"
+    );
+
+    javax.swing.JOptionPane.showMessageDialog(this, "Aula adicionada com sucesso!");
+    this.dispose();
+
+} catch (java.sql.SQLException erroBaseDados) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + erroBaseDados.getMessage());
+}
     }//GEN-LAST:event_btnAdicionarDadosActionPerformed
 
     private void cmbTreinadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTreinadoresActionPerformed
@@ -227,28 +247,10 @@ public class AdicionarAula extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDataActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+ 
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+       
+       
         java.awt.EventQueue.invokeLater(() -> new AdicionarAula().setVisible(true));
     }
 

@@ -1,17 +1,9 @@
-
 package presentation.ui.guii;
 
-/**
- *
- * @author wende
- */
 public class PainelTreinador extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PainelTreinador.class.getName());
 
-    /**
-     * Creates new form PainelTreinador
-     */
     public PainelTreinador() {
         initComponents();
         carregarAulas();
@@ -147,7 +139,7 @@ public class PainelTreinador extends javax.swing.JFrame {
                         .addGap(25, 25, 25))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnRemoverClientes)
-                        .addGap(102, 102, 102))))
+                        .addGap(118, 118, 118))))
         );
 
         pack();
@@ -163,150 +155,153 @@ public class PainelTreinador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdicionarAulaActionPerformed
 
     private void btnRemoverAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverAulaActionPerformed
-     int linha = tblTodasAulas.getSelectedRow();
-    if (linha == -1) { javax.swing.JOptionPane.showMessageDialog(this, "Seleciona uma aula!"); return; }
 
-    try {
-        java.sql.Connection con = conexao.Conexao.getConexao();
-        String nome = tblTodasAulas.getValueAt(linha, 0).toString();
+        int linha = tblTodasAulas.getSelectedRow();
 
-        //apaga as inscrições dessa aula
-        java.sql.PreparedStatement ps1 = con.prepareStatement("DELETE FROM inscricao WHERE aula_id = (SELECT id FROM aula WHERE nome = ?)");
-        ps1.setString(1, nome);
-        ps1.executeUpdate();
+        if (linha == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleciona uma aula!");
+            return;
+        }
 
-        // apaga a aula
-        java.sql.PreparedStatement ps2 = con.prepareStatement("DELETE FROM aula WHERE nome = ?");
-        ps2.setString(1, nome);
-        ps2.executeUpdate();
+        try {
+            java.sql.Connection con = conexao.Conexao.getConexao();
+            String nome = tblTodasAulas.getValueAt(linha, 0).toString();
 
-        carregarAulas();
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
-    }
+            //apaga as inscrições dessa aula
+            java.sql.PreparedStatement ps1 = con.prepareStatement("DELETE FROM inscricao WHERE aula_id = (SELECT id FROM aula WHERE nome = ?)");
+            ps1.setString(1, nome);
+            ps1.executeUpdate();
+
+            // apaga a aula
+            java.sql.PreparedStatement ps2 = con.prepareStatement("DELETE FROM aula WHERE nome = ?");
+            ps2.setString(1, nome);
+            ps2.executeUpdate();
+
+            carregarAulas();
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnRemoverAulaActionPerformed
 
     private void btnRemoverClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverClientesActionPerformed
-        
-       // pega a linha selecionada na tabela
-    int linha = tblClientesRegistrados.getSelectedRow();
-    
-    // se nenhuma linha foi selecionada, avisa e para
-    if (linha == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Seleciona um cliente!");
-        return;
-    }
 
-    // pega o email do cliente selecionado
-    String email = tblClientesRegistrados.getValueAt(linha, 1).toString();
+        // pega a linha selecionada na tabela
+        int linha = tblClientesRegistrados.getSelectedRow();
 
-    try {
-        // conecta à base de dados
-        java.sql.Connection con = conexao.Conexao.getConexao();
+        // se nenhuma linha foi selecionada, avisa e para
+        if (linha == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleciona um cliente!");
+            return;
+        }
 
-        // apaga as inscrições do cliente
-        java.sql.PreparedStatement ps1 = con.prepareStatement(
-            "DELETE FROM inscricao WHERE cliente_id = (SELECT id FROM cliente WHERE email = ?)");
-        ps1.setString(1, email);
-        ps1.executeUpdate();
+        // pega o email do cliente selecionado
+        String email = tblClientesRegistrados.getValueAt(linha, 1).toString();
 
-        // apaga o cliente
-        java.sql.PreparedStatement ps2 = con.prepareStatement(
-            "DELETE FROM cliente WHERE email = ?");
-        ps2.setString(1, email);
-        ps2.executeUpdate();
+        try {
+            // conecta à base de dados
+            java.sql.Connection con = conexao.Conexao.getConexao();
 
-        // atualiza a tabela
-        carregarClientes();
+            // apaga as inscrições do cliente
+            java.sql.PreparedStatement ps1 = con.prepareStatement(
+                    "DELETE FROM inscricao WHERE cliente_id = (SELECT id FROM cliente WHERE email = ?)");
+            ps1.setString(1, email);
+            ps1.executeUpdate();
 
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
-    }
+            // apaga o cliente
+            java.sql.PreparedStatement ps2 = con.prepareStatement(
+                    "DELETE FROM cliente WHERE email = ?");
+            ps2.setString(1, email);
+            ps2.executeUpdate();
+
+            // atualiza a tabela
+            carregarClientes();
+
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnRemoverClientesActionPerformed
 
     private void btnNovoClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoClientesActionPerformed
         new AdicionarCliente().setVisible(true);
     }//GEN-LAST:event_btnNovoClientesActionPerformed
-private void carregarClientes() {
-    try {
-        java.sql.Connection con = conexao.Conexao.getConexao();
+    private void carregarClientes() {
+        try {
+            java.sql.Connection con = conexao.Conexao.getConexao();
 
-        // Parâmetro: query SQL com LEFT JOIN e COUNT
-        // Âmbito: método privado — só acessível dentro de PainelTreinador (encapsulamento)
-        java.sql.ResultSet rs = con.createStatement().executeQuery(
-            "SELECT c.nome, c.email, c.telefone, COUNT(i.id) AS inscricoes " +
-            "FROM cliente c " +
-            "LEFT JOIN inscricao i ON c.id = i.cliente_id " +
-            "GROUP BY c.id, c.nome, c.email, c.telefone");
+            // Parâmetro: query SQL com LEFT JOIN e COUNT
+            // Âmbito: método privado — só acessível dentro de PainelTreinador (encapsulamento)
+            java.sql.ResultSet rs = con.createStatement().executeQuery(
+                    "SELECT c.nome, c.email, c.telefone, COUNT(i.id) AS inscricoes "
+                    + "FROM cliente c "
+                    + "LEFT JOIN inscricao i ON c.id = i.cliente_id "
+                    + "GROUP BY c.id, c.nome, c.email, c.telefone");
 
-        // DefaultTableModel — objeto que serve de modelo de dados para a JTable
-        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
-            new String[]{"Nome", "Email", "Telefone", "Inscrições"}, 0);
+            // DefaultTableModel — objeto que serve de modelo de dados para a JTable
+            javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+                    new String[]{"Nome", "Email", "Telefone", "Inscrições"}, 0);
 
-        // Iteração sobre o ResultSet — cada linha da BD torna-se uma linha na tabela
-        while (rs.next()) {
-            modelo.addRow(new Object[]{
-                rs.getString("nome"),
-                rs.getString("email"),
-                rs.getString("telefone"),
-                rs.getInt("inscricoes")
-            });
-        }
-        /*
+            // Iteração sobre o ResultSet — cada linha da BD torna-se uma linha na tabela
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getString("nome"),
+                    rs.getString("email"),
+                    rs.getString("telefone"),
+                    rs.getInt("inscricoes")
+                });
+            }
+            /*
          Encapsulamento - tblClientesRegistrados é privado, só alterado por este método
-        */
-        
-        tblClientesRegistrados.setModel(modelo);
+             */
 
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
-      }
-   }
+            tblClientesRegistrados.setModel(modelo);
 
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+        }
+    }
 
     private void carregarAulas() {
-    try {
-        java.sql.Connection con = conexao.Conexao.getConexao();
-        
-        
-        java.sql.ResultSet rs = con.createStatement().executeQuery(
-            "SELECT a.nome, a.data_hora_inicio, a.duracao, a.capacidade, " +
-            "COUNT(i.id) AS inscritos " +
-            "FROM aula a " +
-            "LEFT JOIN inscricao i ON a.id = i.aula_id " +
-            "GROUP BY a.id, a.nome, a.data_hora_inicio, a.duracao, a.capacidade");
+        try {
+            java.sql.Connection con = conexao.Conexao.getConexao();
 
-        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
-            new String[]{"Nome", "Data/Hora", "Duração", "Vagas", "Inscritos", "Estado"}, 0);
+            java.sql.ResultSet rs = con.createStatement().executeQuery(
+                    "SELECT a.nome, a.data_hora_inicio, a.duracao, a.capacidade, "
+                    + "COUNT(i.id) AS inscritos "
+                    + "FROM aula a "
+                    + "LEFT JOIN inscricao i ON a.id = i.aula_id "
+                    + "GROUP BY a.id, a.nome, a.data_hora_inicio, a.duracao, a.capacidade");
 
-        while (rs.next()) {
-            int vagas     = rs.getInt("capacidade");
-            int inscritos = rs.getInt("inscritos");
-            String estado;
+            javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+                    new String[]{"Nome", "Data/Hora", "Duração", "Vagas", "Inscritos", "Estado"}, 0);
 
-            if (inscritos >= vagas) {
-                estado = "Lotada";
-            } else {
-                estado = "Disponivel";
+            while (rs.next()) {
+                int vagas = rs.getInt("capacidade");
+                int inscritos = rs.getInt("inscritos");
+                String estado;
+
+                if (inscritos >= vagas) {
+                    estado = "Lotada";
+                } else {
+                    estado = "Disponivel";
+                }
+
+                modelo.addRow(new Object[]{
+                    rs.getString("nome"),
+                    rs.getString("data_hora_inicio"),
+                    rs.getInt("duracao"),
+                    vagas,
+                    inscritos,
+                    estado
+                });
             }
 
-            modelo.addRow(new Object[]{
-                rs.getString("nome"),
-                rs.getString("data_hora_inicio"),
-                rs.getInt("duracao"),
-                vagas,
-                inscritos,
-                estado
-            });
+            tblTodasAulas.setModel(modelo);
+
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
         }
-
-        tblTodasAulas.setModel(modelo);
-
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
     }
-}
-   
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(() -> new PainelTreinador().setVisible(true));

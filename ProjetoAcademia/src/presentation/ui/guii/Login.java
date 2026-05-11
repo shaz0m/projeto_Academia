@@ -88,22 +88,17 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtAdicionarRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAdicionarRegistroActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtAdicionarRegistroActionPerformed
 
     private void txtSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
                                          
     String login    = txtAdicionarRegistro.getText();
     String password = txtSenha.getText();
-
-    if (login.isEmpty() || password.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Preenche o login e a password!");
-        return;
-    }
 
     try {
         Servicoes.UtilizadorDAO dao = new Servicoes.UtilizadorDAO();
