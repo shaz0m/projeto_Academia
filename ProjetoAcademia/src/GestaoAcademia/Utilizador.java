@@ -19,12 +19,26 @@ public class Utilizador {
         this.primeiroLogin = true; // por defeito é sempre true
     }
 
-    public Integer getId() { return id; }
-    public String getNome() { return nome; }
-    public String getLogin() { return login; }
-    public String getPassword() { return password; }
-    public boolean isPrimeiroLogin() { return primeiroLogin; }
+    public Integer getId() {
+    return id; 
+    }
+    public String getNome() { 
+     return nome; 
+    }
+    public String getLogin() { 
+    return login; 
+    }
+    public String getPassword() { 
+    return password; 
+    }
+    public boolean isPrimeiroLogin() {
+    return primeiroLogin; 
+    }
 
-    public void setPassword(String password) { this.password = password; }
-    public void setPrimeiroLogin(boolean p) { this.primeiroLogin = p; }
+    public void setPassword(String password) {
+    this.password = password; 
+    }
+    public void setPrimeiroLogin(boolean p) { 
+    this.primeiroLogin = p; 
+    }
 }
