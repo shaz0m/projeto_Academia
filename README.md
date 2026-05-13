@@ -109,7 +109,7 @@ Instruções de Utilização
    - **Treinador** → PainelTreinador (gestão de aulas e clientes)
    - **Cliente** → PainelCliente (consulta e inscrição em aulas)
 
-Credenciais de teste disponíveis:**
+Credenciais de teste disponíveis:
 
 | Username | Password | Tipo |
 |----------|----------|------|
